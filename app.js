@@ -1,7 +1,7 @@
-import { createServer } from "http";
+const express = require('express')
+const app = express()
 
-const server = createServer((req, res) => {
+app.get("/", (req, res) =>{
     res.end("Test");
-});
-
-server.listen(3000)
+})
+app.listen(3000)
