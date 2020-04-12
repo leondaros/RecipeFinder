@@ -12,15 +12,13 @@ getRecipes = (params) => {
     return axios.get("http://www.recipepuppy.com/api/?"+getParams(params))
             .then(res => res.data.results)
             .catch(function (error) {
-                console.log(error)
-            //   return error
+              return { error: "No momento o serviço se encontra indisponivel" }
             })
 }
 
 getParams = (url) => {
     let key = url.split("=")[0]
     let values = limitParams(url).join(",")
-    console.log(values)
     if(key=="i"){
         return key+"="+values
     }
@@ -38,15 +36,16 @@ getGif = (title) => {
             "q="+title+"&api_key="+"cViWXzcyEX87ikHovWKmDNpsEouM4x5u"+"&limit=1")
                 .then(res => res.data.data[0].embed_url)
                 .catch(function (error) {
-                    console.log(error)
-                    // return error
+                    return { error: "No momento o serviço se encontra indisponivel" }
                 })
 }
 
 formatResponse = async (recipes,params) => {
     result = {}
     result["keywords"] = limitParams(params._parsedUrl.query).sort()
-    result["recipes"] = await buildRecipe(recipes)
+    if(recipes.length>0){
+        result["recipes"] = await buildRecipe(recipes)
+    }
     return result
 }
 
