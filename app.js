@@ -4,8 +4,8 @@ const axios = require('axios');
 const gifKey = 'cViWXzcyEX87ikHovWKmDNpsEouM4x5u';
 const app = express();
 app.get('/', async (req, res) => {
-  const response = await getRecipes(req._parsedUrl.query);
-  const recipes = await formatResponse(response, req);
+  let response = await getRecipes(req._parsedUrl.query);
+  let recipes = await formatResponse(response, req);
   res.send(recipes);
 });
 
@@ -14,8 +14,8 @@ const getRecipes = (params) => axios.get(`http://www.recipepuppy.com/api/?${getP
   .catch({ error: 'No momento o serviço se encontra indisponivel' });
 
 const getParams = (url) => {
-  const key = url.split('=')[0];
-  const values = limitParams(url).join(',');
+  let key = url.split('=')[0];
+  let values = limitParams(url).join(',');
   if (key === 'i') {
     return `${key}=${values}`;
   }
@@ -23,18 +23,17 @@ const getParams = (url) => {
 };
 
 const limitParams = (url) => {
-  const values = url.split('=')[1];
-  const listValues = values.split(',');
+  let values = url.split('=')[1];
+  let listValues = values.split(',');
   return listValues.splice(0, 3);
 };
 
-const getGif = (title) => axios.get(`${'http://api.giphy.com/v1/gifs/search?'
-            + 'q='}${title}&api_key=${gifKey}&limit=1`)
+const getGif = (title) => axios.get(`${'http://api.giphy.com/v1/gifs/search?q='}${title}&api_key=${gifKey}&limit=1`)
   .then((res) => res.data.data[0].embed_url)
   .catch({ error: 'No momento o serviço se encontra indisponivel' });
 
 const formatResponse = async (recipes, params) => {
-  const result = {};
+  let result = {};
   result.keywords = limitParams(params._parsedUrl.query).sort();
   if (recipes.length > 0) {
     result.recipes = await buildRecipe(recipes);
@@ -43,8 +42,8 @@ const formatResponse = async (recipes, params) => {
 };
 
 const buildRecipe = async (recipes) => {
-  const formatedRecipes = recipes.map(async (recipe) => {
-    const gif = await getGif(recipe.title);
+  let formatedRecipes = recipes.map(async (recipe) => {
+    let gif = await getGif(recipe.title);
     return {
       title: recipe.title,
       ingredients: recipe.ingredients.split(', ').sort(),
