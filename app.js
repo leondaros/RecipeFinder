@@ -15,10 +15,11 @@ getRecipes = (params) => {
 
 formatResponse = (recipes,params) => {
     result = {}
+    result["keywords"] = params.query.i.split(",").sort()
     result["recipes"] = recipes.map((recipe)=>{
         return {
             "title": recipe.title,
-            "ingredients": recipe.ingredients.split(", "),
+            "ingredients": recipe.ingredients.split(", ").sort(),
             "link": recipe.href,
             "gif": ""
         }
