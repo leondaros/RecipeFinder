@@ -7,5 +7,5 @@ Este app foi desenvolvido utilizando NodeJs, para executa localmente siga os pas
 
 # Como Utilizar
 
-- Pesquise por ingredientes através URL da seguinte maneira : 'http://127.0.0.1/recipes/?i=onion,tomato'
+- Pesquise por ingredientes através URL da seguinte maneira : 'http://localhost:3000/recipes/?i=onion,tomato'
 - A aplicação retornará uma lista de receitas que utilizem estes ingredientes
