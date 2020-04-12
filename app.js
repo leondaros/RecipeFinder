@@ -1,7 +1,10 @@
 const express = require('express')
-const app = express()
+const axios = require('axios');
 
-app.get("/", (req, res) =>{
-    res.end("Test");
+const app = express()
+app.get("/", async (req, res) => {
+    recipes = await axios.get("http://www.recipepuppy.com/api/?i=onions,garlic")
+    res.send(recipes.data);
 })
+
 app.listen(3000)
