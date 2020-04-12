@@ -3,7 +3,7 @@ const axios = require('axios');
 
 const gifKey = 'cViWXzcyEX87ikHovWKmDNpsEouM4x5u';
 const app = express();
-app.get('/', async (req, res) => {
+app.get('/recipes/', async (req, res) => {
   let response = await getRecipes(req._parsedUrl.query);
   let recipes = await formatResponse(response, req);
   res.send(recipes);
