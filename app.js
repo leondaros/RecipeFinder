@@ -3,17 +3,34 @@ const axios = require('axios');
 
 const app = express()
 app.get("/", async (req, res) => {
-    response = await getRecipes(req._parsedUrl.search)
+    response = await getRecipes(req._parsedUrl.query)
     recipes = await formatResponse(response, req)
     res.send(recipes);
 })
 
 getRecipes = (params) => {
-    return axios.get("http://www.recipepuppy.com/api/"+params)
+    return axios.get("http://www.recipepuppy.com/api/?"+getParams(params))
             .then(res => res.data.results)
             .catch(function (error) {
-              console.log("error: "+error);
+                console.log(error)
+            //   return error
             })
+}
+
+getParams = (url) => {
+    let key = url.split("=")[0]
+    let values = limitParams(url).join(",")
+    console.log(values)
+    if(key=="i"){
+        return key+"="+values
+    }
+    return ""
+}
+
+limitParams = (url) =>{
+    let values = url.split("=")[1]
+    let list_values = values.split(",")
+    return list_values.splice(0,3)
 }
 
 getGif = (title) => {
@@ -21,13 +38,14 @@ getGif = (title) => {
             "q="+title+"&api_key="+"cViWXzcyEX87ikHovWKmDNpsEouM4x5u"+"&limit=1")
                 .then(res => res.data.data[0].embed_url)
                 .catch(function (error) {
-                    console.log("error: "+error);
+                    console.log(error)
+                    // return error
                 })
 }
 
 formatResponse = async (recipes,params) => {
     result = {}
-    result["keywords"] = params.query.i.split(",").sort()
+    result["keywords"] = limitParams(params._parsedUrl.query).sort()
     result["recipes"] = await buildRecipe(recipes)
     return result
 }
